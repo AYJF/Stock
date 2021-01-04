@@ -34,9 +34,26 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
         drawLine(
             lastPoint.j, curPoint.j, canvas, lastX, curX, ChartColors.jColor);
         break;
-      case SecondaryState.RSI:
+      case SecondaryState.RSI: //RSI
         drawLine(lastPoint.rsi, curPoint.rsi, canvas, lastX, curX,
             ChartColors.rsiColor);
+        drawLine(20, 20, canvas, lastX, curX, Colors.white);
+        drawLine(70, 70, canvas, lastX, curX, Colors.red);
+        break;
+      case SecondaryState.ADX: //ADX
+        drawLine(lastPoint.adx, curPoint.adx, canvas, lastX, curX,
+            ChartColors.adxColor);
+        drawLine(20, 20, canvas, lastX, curX, Colors.blue);
+        break;
+      case SecondaryState.STOCH:
+        drawLine(
+            lastPoint.slowK, curPoint.slowK, canvas, lastX, curX, Colors.blue);
+        drawLine(lastPoint.slowD, curPoint.slowD, canvas, lastX, curX,
+            ChartColors.adxColor);
+
+        drawLine(20, 20, canvas, lastX, curX, Colors.white);
+        drawLine(70, 70, canvas, lastX, curX, Colors.red);
+
         break;
       case SecondaryState.WR:
         drawLine(
@@ -116,6 +133,38 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
           TextSpan(
               text: "RSI(14):${format(data.rsi)}    ",
               style: getTextStyle(ChartColors.rsiColor)),
+          TextSpan(
+              text: "Upper Band:${format(70)}    ",
+              style: getTextStyle(Colors.red)),
+          TextSpan(
+              text: "Lower Band:${format(20)}    ",
+              style: getTextStyle(Colors.white)),
+        ];
+        break;
+      case SecondaryState.ADX:
+        children = [
+          TextSpan(
+              text: "ADX(10):${format(data.adx)}    ",
+              style: getTextStyle(ChartColors.adxColor)),
+          TextSpan(
+              text: "BAND_ADX(10):${format(20.00)}    ",
+              style: getTextStyle(Colors.blue)),
+        ];
+        break;
+      case SecondaryState.STOCH:
+        children = [
+          TextSpan(
+              text: "SlowD(%D):${format(data.slowD)}    ",
+              style: getTextStyle(ChartColors.adxColor)),
+          TextSpan(
+              text: "SlowK(%K):${format(data.slowK)}    ",
+              style: getTextStyle(Colors.blue)),
+          TextSpan(
+              text: "Upper Band:${format(70)}    ",
+              style: getTextStyle(Colors.red)),
+          TextSpan(
+              text: "Lower Band:${format(20)}    ",
+              style: getTextStyle(Colors.white)),
         ];
         break;
       case SecondaryState.WR:

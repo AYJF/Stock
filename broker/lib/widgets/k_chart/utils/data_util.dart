@@ -164,6 +164,20 @@ class DataUtil {
     }
   }
 
+  static void calcADX(List<KLineEntity> dataList, List<double> adx) {
+    for (var i = 0; i < dataList.length; i++) {
+      dataList[i].adx = adx[i];
+    }
+  }
+
+  static void calcSTOCH(
+      List<KLineEntity> dataList, List<double> slowD, List<double> slowK) {
+    for (var i = 0; i < dataList.length; i++) {
+      dataList[i].slowD = slowD[i];
+      dataList[i].slowK = slowK[i];
+    }
+  }
+
   static void calcKDJ(List<KLineEntity> dataList) {
     double k = 0;
     double d = 0;

@@ -5,9 +5,9 @@ class ChartColors {
 
   static const Color kLineColor = Color(0xff4C86CD);
   static const Color lineFillColor = Color(0x554C86CD);
-  static const Color ma5Color = Color(0xffC9B885);
-  static const Color ma10Color = Color(0xff6CB0A6);
-  static const Color ma30Color = Color(0xff9979C6);
+  static const Color ma5Color = Color(0xff87F717);
+  static const Color ma10Color = Color(0xff50EBEC);
+  static const Color ma30Color = Color(0xffC24641);
   static const Color upColor = Color(0xff228B22); // Color(0xff4DAA90);
   static const Color dnColor = Color(0xffDC143C); //Color(0xffC15466)
   static const Color volColor = Color(0xff4729AE);
@@ -20,6 +20,9 @@ class ChartColors {
   static const Color dColor = Color(0xff6CB0A6);
   static const Color jColor = Color(0xff9979C6);
   static const Color rsiColor = Color(0xffC9B885);
+
+  static const Color adxColor = Color(0xff228B22);
+  static const Color obvColor = Color(0xffffffff);
 
   static const Color defaultTextColor = Color(0xff60738E);
 

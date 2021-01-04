@@ -8,7 +8,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   double mCandleLineWidth = ChartStyle.candleLineWidth;
   MainState state;
   bool isLine;
-  //绘制的内容区域
+
   Rect _contentRect;
   double _contentPadding = 5.0;
   List<int> maDayList;

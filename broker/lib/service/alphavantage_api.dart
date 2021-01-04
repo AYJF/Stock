@@ -129,6 +129,56 @@ class AlphaVantageApi {
       return null;
     }
   }
-}
 
-//https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo
+  //INDICATORS
+
+  Future<Map<String, dynamic>> getSTOCH(String symbol,
+      {String interval = 'daily'}) async {
+    try {
+      final response = await http.get(_apiBaseUrl +
+          'STOCH&symbol=$symbol&interval=$interval&apikey=$_apiKey');
+
+      if (response.statusCode == 200)
+        return convert.jsonDecode(response.body);
+      else
+        return null;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>> getADX(String symbol,
+      {String interval = 'daily'}) async {
+    try {
+      final response = await http.get(_apiBaseUrl +
+          'ADX&symbol=$symbol&interval=$interval&time_period=10&apikey=$_apiKey');
+
+      if (response.statusCode == 200)
+        return convert.jsonDecode(response.body);
+      else
+        return null;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  //CCI
+
+  Future<Map<String, dynamic>> getOBV(String symbol,
+      {String interval = 'daily'}) async {
+    try {
+      final response = await http.get(_apiBaseUrl +
+          'OBV&symbol=$symbol&interval=$interval&apikey=$_apiKey');
+
+      if (response.statusCode == 200)
+        return convert.jsonDecode(response.body);
+      else
+        return null;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+}
