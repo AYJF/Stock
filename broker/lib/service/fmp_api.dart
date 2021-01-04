@@ -125,6 +125,21 @@ class FMPApi {
     }
   }
 
+  Future<List<dynamic>> getNasdaq() async {
+    try {
+      final response = await http
+          .get(_apiBaseUrl + _version + '/nasdaq_constituent?apikey=$_apiKey');
+
+      if (response.statusCode == 200) {
+        return convert.jsonDecode(response.body);
+      } else
+        return [];
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
+  }
+
   Future<List<dynamic>> getQuote(String symbol) async {
     try {
       final response = await http

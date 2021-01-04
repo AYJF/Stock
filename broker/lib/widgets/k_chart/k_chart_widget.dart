@@ -8,7 +8,7 @@ import 'renderer/chart_painter.dart';
 import 'utils/date_format_util.dart';
 
 enum MainState { MA, BOLL, NONE }
-enum SecondaryState { MACD, KDJ, RSI, WR, NONE }
+enum SecondaryState { MACD, KDJ, RSI, WR, ADX, STOCH, NONE }
 
 class TimeFormat {
   static const List<String> YEAR_MONTH_DAY = [yyyy, '-', mm, '-', dd];
@@ -33,7 +33,6 @@ class KChartWidget extends StatefulWidget {
   final bool isLine;
   final bool isChinese;
   final List<String> timeFormat;
-  //当屏幕滚动到尽头会调用，真为拉到屏幕右侧尽头，假为拉到屏幕左侧尽头
   final Function(bool) onLoadMore;
   final List<Color> bgColor;
   final int fixedLength;

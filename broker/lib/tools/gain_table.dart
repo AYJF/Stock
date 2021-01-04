@@ -134,7 +134,8 @@ class _DataSource extends DataTableSource {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => Details(
+              builder: (context) => Chart(
+                    title: row.companyName,
                     symbol: row.tickers,
                   )),
         );

@@ -40,6 +40,45 @@ List<Item> time = <Item>[
       )),
 ];
 
+List<Item> oscs = <Item>[
+  const Item(
+      'NONE',
+      Icon(
+        Icons.filter_none,
+        color: Colors.deepOrange,
+      )),
+  const Item(
+      'RSI',
+      Icon(
+        Icons.transform,
+        color: Colors.deepOrange,
+      )),
+  const Item(
+      'MACD',
+      Icon(
+        Icons.track_changes,
+        color: Colors.deepOrange,
+      )),
+  const Item(
+      'STOCH',
+      Icon(
+        Icons.waves_sharp,
+        color: Colors.deepOrange,
+      )),
+  const Item(
+      'ADX',
+      Icon(
+        Icons.settings_input_composite,
+        color: Colors.deepOrange,
+      )),
+  const Item(
+      'OBV',
+      Icon(
+        Icons.crop_sharp,
+        color: Colors.deepOrange,
+      )),
+];
+
 class Chart extends StatefulWidget {
   Chart({Key key, this.title, this.symbol}) : super(key: key);
 
@@ -53,7 +92,12 @@ class Chart extends StatefulWidget {
 class _ChartState extends State<Chart> {
   int _index = 0;
   Item selectedTime = time[0];
+  Item selectedOSC = oscs[0];
   List<KLineEntity> datas = [];
+  List<double> adx = [];
+  List<double> slowD = [];
+  List<double> slowK = [];
+
   InfoCard infoCard;
   bool showLoading = true;
   MainState _mainState = MainState.MA;
@@ -89,7 +133,7 @@ class _ChartState extends State<Chart> {
     _asks = List();
     double amount = 0.0;
     bids?.sort((left, right) => left.price.compareTo(right.price));
-    //累加买入委托量
+
     bids.reversed.forEach((item) {
       amount += item.vol;
       item.vol = amount;
@@ -98,7 +142,6 @@ class _ChartState extends State<Chart> {
 
     amount = 0.0;
     asks?.sort((left, right) => left.price.compareTo(right.price));
-    //累加卖出委托量
     asks?.forEach((item) {
       amount += item.vol;
       item.vol = amount;
@@ -483,6 +526,51 @@ class _ChartState extends State<Chart> {
                         }).toList(),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: DropdownButton<Item>(
+                        underline: Container(
+                            // height: 2,
+                            // color: Colors.deepPurpleAccent,
+                            ),
+                        hint: Text("Select OSC"),
+                        value: selectedOSC,
+                        onChanged: (Item value) {
+                          setState(() {
+                            selectedOSC = value;
+                            if (selectedOSC.name == 'RSI')
+                              _secondaryState = SecondaryState.RSI;
+                            else if (selectedOSC.name == 'MACD')
+                              _secondaryState = SecondaryState.MACD;
+                            else if (selectedOSC.name == 'STOCH') {
+                              getSTOCH();
+                              _secondaryState = SecondaryState.STOCH;
+                            } else if (selectedOSC.name == 'ADX') {
+                              getADX();
+                              _secondaryState = SecondaryState.ADX;
+                            } else
+                              _secondaryState = SecondaryState.NONE;
+                          });
+                        },
+                        items: oscs.map((Item user) {
+                          return DropdownMenuItem<Item>(
+                            value: user,
+                            child: Row(
+                              children: <Widget>[
+                                user.icon,
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  user.name,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -565,6 +653,68 @@ class _ChartState extends State<Chart> {
       print(e.toString());
     });
   }
+
+  void getSTOCH() {
+    slowD.clear();
+    slowK.clear();
+    AlphaVantageApi()
+        .getSTOCH(widget.symbol, interval: selectedTime.name)
+        .then((value) {
+      value['Technical Analysis: STOCH'].forEach((key, v) {
+        slowD.add(double.tryParse(v['SlowD']));
+        slowK.add(double.tryParse(v['SlowK']));
+      });
+
+      slowD = slowD.sublist(0, datas.length);
+      slowD = slowD.reversed.toList().cast<double>();
+
+      slowK = slowK.sublist(0, datas.length);
+      slowK = slowK.reversed.toList().cast<double>();
+
+      DataUtil.calcSTOCH(datas, slowD, slowK);
+      setState(() {});
+    }).catchError((_) {
+      print("stoch error");
+    });
+  }
+
+  void getADX() {
+    adx.clear();
+    AlphaVantageApi()
+        .getADX(widget.symbol, interval: selectedTime.name)
+        .then((value) {
+      value['Technical Analysis: ADX'].forEach((key, v) {
+        adx.add(double.tryParse(v['ADX']));
+      });
+
+      adx = adx.sublist(0, datas.length);
+      adx = adx.reversed.toList().cast<double>();
+
+      DataUtil.calcADX(datas, adx);
+      setState(() {});
+    }).catchError((_) {
+      print("adx error");
+    });
+  }
+
+  // void getOBV() {
+  //   adx.clear();
+  //   AlphaVantageApi()
+  //       .getOBV(widget.symbol, interval: selectedTime.name)
+  //       .then((value) {
+  //     value['Technical Analysis: OBV'].forEach((key, v) {
+  //       adx.add(double.tryParse(v['OBV']));
+  //     });
+
+  //     adx = adx.sublist(0, datas.length);
+  //     adx = adx.reversed.toList().cast<double>();
+
+  //     DataUtil.calcOBV(datas, adx);
+  //     setState(() {});
+  //   }).catchError((_) {
+  //     print("adx error");
+  //   });
+  // }
 
   void getData() {
     datas.clear();
