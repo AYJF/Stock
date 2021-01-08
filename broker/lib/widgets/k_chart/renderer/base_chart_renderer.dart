@@ -51,6 +51,34 @@ abstract class BaseChartRenderer<T> {
   void drawChart(T lastPoint, T curPoint, double lastX, double curX, Size size,
       Canvas canvas);
 
+  void drawDashedLine(Canvas canvas, Size size) {
+    // Chage to your preferred size
+    const int dashWidth = 4;
+    const int dashSpace = 4;
+
+    // Start to draw from left size.
+    // Of course, you can change it to match your requirement.
+    double startX = 0;
+    double y = 10;
+
+    // Repeat drawing until we reach the right edge.
+    // In our example, size.with = 300 (from the SizedBox)
+    while (startX < size.width) {
+      // Draw a small line.
+      canvas.drawLine(
+        Offset(startX, y),
+        Offset(startX + dashWidth, y),
+        Paint()
+          ..color = Colors.orange
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.0,
+      );
+
+      // Update the starting X
+      startX += dashWidth + dashSpace;
+    }
+  }
+
   void drawLine(double lastPrice, double curPrice, Canvas canvas, double lastX,
       double curX, Color color) {
     if (lastPrice == null || curPrice == null) {
@@ -60,6 +88,7 @@ abstract class BaseChartRenderer<T> {
     double lastY = getY(lastPrice);
     double curY = getY(curPrice);
     //print("lastX-----==" + lastX.toString() + "==lastY==" + lastY.toString() + "==curX==" + curX.toString() + "==curY==" + curY.toString());
+
     canvas.drawLine(
         Offset(lastX, lastY), Offset(curX, curY), chartPaint..color = color);
   }

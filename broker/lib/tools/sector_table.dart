@@ -1,6 +1,4 @@
-import 'package:broker/models/most_gainers.dart';
 import 'package:broker/models/sector_model.dart';
-import 'package:broker/widgets/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -97,6 +97,8 @@ class _ChartState extends State<Chart> {
   List<double> adx = [];
   List<double> slowD = [];
   List<double> slowK = [];
+  List<double> minusDI = [];
+  List<double> plusDI = [];
 
   InfoCard infoCard;
   bool showLoading = true;
@@ -543,10 +545,8 @@ class _ChartState extends State<Chart> {
                             else if (selectedOSC.name == 'MACD')
                               _secondaryState = SecondaryState.MACD;
                             else if (selectedOSC.name == 'STOCH') {
-                              getSTOCH();
                               _secondaryState = SecondaryState.STOCH;
                             } else if (selectedOSC.name == 'ADX') {
-                              getADX();
                               _secondaryState = SecondaryState.ADX;
                             } else
                               _secondaryState = SecondaryState.NONE;
@@ -654,68 +654,6 @@ class _ChartState extends State<Chart> {
     });
   }
 
-  void getSTOCH() {
-    slowD.clear();
-    slowK.clear();
-    AlphaVantageApi()
-        .getSTOCH(widget.symbol, interval: selectedTime.name)
-        .then((value) {
-      value['Technical Analysis: STOCH'].forEach((key, v) {
-        slowD.add(double.tryParse(v['SlowD']));
-        slowK.add(double.tryParse(v['SlowK']));
-      });
-
-      slowD = slowD.sublist(0, datas.length);
-      slowD = slowD.reversed.toList().cast<double>();
-
-      slowK = slowK.sublist(0, datas.length);
-      slowK = slowK.reversed.toList().cast<double>();
-
-      DataUtil.calcSTOCH(datas, slowD, slowK);
-      setState(() {});
-    }).catchError((_) {
-      print("stoch error");
-    });
-  }
-
-  void getADX() {
-    adx.clear();
-    AlphaVantageApi()
-        .getADX(widget.symbol, interval: selectedTime.name)
-        .then((value) {
-      value['Technical Analysis: ADX'].forEach((key, v) {
-        adx.add(double.tryParse(v['ADX']));
-      });
-
-      adx = adx.sublist(0, datas.length);
-      adx = adx.reversed.toList().cast<double>();
-
-      DataUtil.calcADX(datas, adx);
-      setState(() {});
-    }).catchError((_) {
-      print("adx error");
-    });
-  }
-
-  // void getOBV() {
-  //   adx.clear();
-  //   AlphaVantageApi()
-  //       .getOBV(widget.symbol, interval: selectedTime.name)
-  //       .then((value) {
-  //     value['Technical Analysis: OBV'].forEach((key, v) {
-  //       adx.add(double.tryParse(v['OBV']));
-  //     });
-
-  //     adx = adx.sublist(0, datas.length);
-  //     adx = adx.reversed.toList().cast<double>();
-
-  //     DataUtil.calcOBV(datas, adx);
-  //     setState(() {});
-  //   }).catchError((_) {
-  //     print("adx error");
-  //   });
-  // }
-
   void getData() {
     datas.clear();
     FMPApi()
@@ -730,9 +668,6 @@ class _ChartState extends State<Chart> {
           close: e['close'],
           vol: e['volume'],
           amount: e['ema'],
-          // change:
-          //     (double.tryParse(value['5. adjusted close']) - old) / old * 100,
-          // ratio: double.tryParse(value['8. split coefficient']),
         ));
       });
       datas = datas.reversed.toList().cast<KLineEntity>();

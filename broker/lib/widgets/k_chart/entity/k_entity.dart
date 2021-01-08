@@ -1,5 +1,4 @@
 import 'package:broker/widgets/k_chart/entity/adx_entity.dart';
-import 'package:broker/widgets/k_chart/entity/cci_entity.dart';
 import 'package:broker/widgets/k_chart/entity/stoch_entity.dart';
 
 import 'candle_entity.dart';

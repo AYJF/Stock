@@ -1,4 +1,3 @@
-import 'package:broker/info/datails.dart';
 import 'package:broker/models/most_gainers.dart';
 import 'package:broker/widgets/chart.dart';
 import 'package:flutter/material.dart';

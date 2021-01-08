@@ -43,16 +43,21 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
       case SecondaryState.ADX: //ADX
         drawLine(lastPoint.adx, curPoint.adx, canvas, lastX, curX,
             ChartColors.adxColor);
+        drawLine(lastPoint.minusDi, curPoint.minusDi, canvas, lastX, curX,
+            Colors.red);
+        drawLine(lastPoint.plusDi, curPoint.plusDi, canvas, lastX, curX,
+            Colors.green);
+
         drawLine(20, 20, canvas, lastX, curX, Colors.blue);
         break;
       case SecondaryState.STOCH:
+        drawLine(lastPoint.slowK, curPoint.slowK, canvas, lastX, curX,
+            ChartColors.dnColor);
         drawLine(
-            lastPoint.slowK, curPoint.slowK, canvas, lastX, curX, Colors.blue);
-        drawLine(lastPoint.slowD, curPoint.slowD, canvas, lastX, curX,
-            ChartColors.adxColor);
+            lastPoint.slowD, curPoint.slowD, canvas, lastX, curX, Colors.blue);
 
-        drawLine(20, 20, canvas, lastX, curX, Colors.white);
-        drawLine(70, 70, canvas, lastX, curX, Colors.red);
+        drawLine(20, 20, canvas, lastX, curX, Colors.pink);
+        drawLine(70, 70, canvas, lastX, curX, Colors.pink);
 
         break;
       case SecondaryState.WR:
@@ -144,27 +149,33 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
       case SecondaryState.ADX:
         children = [
           TextSpan(
-              text: "ADX(10):${format(data.adx)}    ",
-              style: getTextStyle(ChartColors.adxColor)),
+              text: "ADX(14):${format(data.adx)}    ",
+              style: getTextStyle(Colors.white)),
           TextSpan(
-              text: "BAND_ADX(10):${format(20.00)}    ",
+              text: "BAND_ADX(14):${format(20.00)}    ",
               style: getTextStyle(Colors.blue)),
+          TextSpan(
+              text: "-DI(14):${format(data.minusDi)}    ",
+              style: getTextStyle(Colors.red)),
+          TextSpan(
+              text: "+DI(14):${format(data.plusDi)}    ",
+              style: getTextStyle(Colors.green)),
         ];
         break;
       case SecondaryState.STOCH:
         children = [
           TextSpan(
               text: "SlowD(%D):${format(data.slowD)}    ",
-              style: getTextStyle(ChartColors.adxColor)),
-          TextSpan(
-              text: "SlowK(%K):${format(data.slowK)}    ",
               style: getTextStyle(Colors.blue)),
           TextSpan(
+              text: "SlowK(%K):${format(data.slowK)} (14,3,3)   ",
+              style: getTextStyle(ChartColors.dnColor)),
+          TextSpan(
               text: "Upper Band:${format(70)}    ",
-              style: getTextStyle(Colors.red)),
+              style: getTextStyle(Colors.pink)),
           TextSpan(
               text: "Lower Band:${format(20)}    ",
-              style: getTextStyle(Colors.white)),
+              style: getTextStyle(Colors.pink)),
         ];
         break;
       case SecondaryState.WR:
