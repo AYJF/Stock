@@ -34,6 +34,7 @@ dependencies:
   url_launcher: ^5.7.10
   floating_bottom_navigation_bar: ^1.4.1
   json_table: ^1.4.0
+  rounded_loading_button: ^1.0.18
 
 
 

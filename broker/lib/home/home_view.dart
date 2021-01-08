@@ -5,6 +5,7 @@ import 'package:broker/elite/most_active.dart';
 import 'package:broker/elite/sector_performance.dart';
 import 'package:broker/info/info_view.dart';
 import 'package:broker/models/symbol_model.dart';
+import 'package:broker/screener/screener_view.dart';
 import 'package:broker/service/fmp_api.dart';
 
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class HomeView extends StatelessWidget {
   final TextEditingController myController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    List<SymbolModel> _symbolModel = [];
     return Scaffold(
       appBar: AppBar(
         title: Text("Stock List"),
@@ -78,8 +80,14 @@ class HomeView extends StatelessWidget {
               Icons.image_aspect_ratio,
               color: Colors.deepOrange,
             ),
-            onPressed: () async {
-              // await FMPApi().getStockMarkerIndex();
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ScreenerView(
+                          listSymbol: _symbolModel,
+                        )),
+              );
             },
           ),
         ],
@@ -93,8 +101,6 @@ class HomeView extends StatelessWidget {
             if (snapshot.hasError)
               return Center(child: Text('Error: ${snapshot.error}'));
             else {
-              List<SymbolModel> _symbolModel = [];
-
               snapshot.data.forEach((element) {
                 _symbolModel.add(SymbolModel.fromJson(element));
               });

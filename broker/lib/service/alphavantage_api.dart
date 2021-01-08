@@ -148,11 +148,14 @@ class AlphaVantageApi {
     }
   }
 
-  Future<Map<String, dynamic>> getADX(String symbol,
-      {String interval = 'daily'}) async {
+  Future<Map<String, dynamic>> getADX(
+    String symbol, {
+    String interval = 'daily',
+    int period = 10,
+  }) async {
     try {
       final response = await http.get(_apiBaseUrl +
-          'ADX&symbol=$symbol&interval=$interval&time_period=10&apikey=$_apiKey');
+          'ADX&symbol=$symbol&interval=$interval&time_period=$period&apikey=$_apiKey');
 
       if (response.statusCode == 200)
         return convert.jsonDecode(response.body);
@@ -181,4 +184,44 @@ class AlphaVantageApi {
       return null;
     }
   }
+
+  Future<Map<String, dynamic>> getDIMinus(
+    String symbol, {
+    String time = 'daily',
+    int period = 10,
+  }) async {
+    try {
+      final response = await http.get(_apiBaseUrl +
+          'MINUS_DI&symbol=$symbol&interval=$time&time_period=$period&apikey=$_apiKey');
+
+      if (response.statusCode == 200) {
+        return convert.jsonDecode(response.body);
+      } else
+        return {};
+    } catch (e) {
+      print(e.toString());
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getDIPlus(
+    String symbol, {
+    String time = 'daily',
+    int period = 10,
+  }) async {
+    try {
+      final response = await http.get(_apiBaseUrl +
+          'PLUS_DI&symbol=$symbol&interval=$time&time_period=$period&apikey=$_apiKey');
+
+      if (response.statusCode == 200) {
+        return convert.jsonDecode(response.body);
+      } else
+        return {};
+    } catch (e) {
+      print(e.toString());
+      return {};
+    }
+  }
 }
+
+//https://www.alphavantage.co/query?function=PLUS_DI&symbol=IBM&interval=daily&time_period=10&apikey=demo

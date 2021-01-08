@@ -155,3 +155,5 @@ class FMPApi {
     }
   }
 }
+
+//https://www.alphavantage.co/query?function=PLUS_DI&symbol=IBM&interval=daily&time_period=10&apikey=demo

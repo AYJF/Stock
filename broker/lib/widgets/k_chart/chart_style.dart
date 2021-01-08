@@ -21,7 +21,7 @@ class ChartColors {
   static const Color jColor = Color(0xff9979C6);
   static const Color rsiColor = Color(0xffC9B885);
 
-  static const Color adxColor = Color(0xff228B22);
+  static const Color adxColor = Color(0xffffffff);
   static const Color obvColor = Color(0xffffffff);
 
   static const Color defaultTextColor = Color(0xff60738E);
